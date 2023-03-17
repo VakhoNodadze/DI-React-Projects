@@ -1,34 +1,17 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+// @ts-nocheck
+import "./App.scss";
+import TemperatureCard from "./components/Temperature";
 
 function App() {
-  const [count, setCount] = useState(0)
+  // თუ ტემპერატურა 0ზე ნაკლებია, temperature დივის ბეგქრაუნდ ფერი იყოს ლურჯი, თუ მეტია 0ზე და ნაკლებია 15ზე იყოს მწვანე, 15დან 30მდე იყოს ყვითელი, ხოლო 30ის ზევით იყოს წითელი
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <div style={{ width: "100%", display: "flex", flexWrap: "wrap" }}>
+      <TemperatureCard initialTemperature={0} />
+      <TemperatureCard initialTemperature={10} />
+      <TemperatureCard initialTemperature={-25} />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
