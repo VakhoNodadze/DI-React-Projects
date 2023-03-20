@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.scss";
 
 function App() {
@@ -21,6 +21,7 @@ function App() {
     phoneNumber: "",
     city: "",
   });
+  const [deletedUserId, setDeletedUserId] = useState("");
   const [users, setUsers] = useState([
     {
       id: 1,
@@ -98,7 +99,7 @@ function App() {
       <div className="card-header">
         <img src={editableUser.avatar} width="50px" height="100px" />
         <span>
-          {/* <strong>{user.firstName} </strong> 
+          {/* <strong>{user.firstName} </strong>
           <strong> {user.lastName} </strong> */}
           <input
             value={editableUser.firstName}
@@ -133,6 +134,20 @@ function App() {
       <button onClick={handleUpdateUser}>Update User</button>
     </div>
   );
+
+  useEffect(() => {
+    if (!deletedUserId) return;
+
+    const updatedUsers = [...users].filter((user) => user.id !== deletedUserId);
+    setUsers(updatedUsers);
+    setDeletedUserId("");
+  }, [deletedUserId]);
+
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((res) => res.json())
+      .then((data) => setUsers(data));
+  }, [name]);
 
   return (
     <>
@@ -186,24 +201,29 @@ function App() {
       </div>
       <div className="flex-wrap">
         {users.map((user) => {
-          if (editableUser.id === user.id) {
-            return renderEditableUser(user);
-          }
+          // if (editableUser.id === user.id) {
+          //   return renderEditableUser(user);
+          // }
           return (
             <div className="card" key={user.id}>
               <div className="card-header">
                 <img src={user.avatar} width="50px" height="100px" />
                 <p>
-                  <strong>{user.firstName} </strong>{" "}
-                  <strong> {user.lastName} </strong>
+                  <strong>{user.name} </strong>{" "}
+                </p>
+                <p
+                  style={{ color: "red", cursor: "pointer", marginLeft: 2 }}
+                  onClick={() => setDeletedUserId(user.id)}
+                >
+                  Delete
                 </p>
               </div>
               <div className="card-info">
                 <p>
-                  Phone number: <strong>{user.phoneNumber}</strong>
+                  Phone number: <strong>{user.phone}</strong>
                 </p>
                 <p>
-                  City: <strong> {user.city} </strong>
+                  City: <strong> {user.address.city} </strong>
                 </p>
               </div>
               <button onClick={() => handleEditUser(user)}>Edit User</button>
