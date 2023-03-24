@@ -1,6 +1,7 @@
 // @ts-nocheck
-import React, { useState } from "react";
-import "./CardItem.scss";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import './CardItem.scss';
 
 const CardItem = ({ user, handleDeleteUser, onUpdateUser }) => {
   // @ts-ignore
@@ -59,7 +60,7 @@ const CardItem = ({ user, handleDeleteUser, onUpdateUser }) => {
       </div>
       <div className="card-info">
         <span>
-          Phone number:{" "}
+          Phone number:{' '}
           <input
             // @ts-ignore
             value={editableUser.phone}
@@ -69,7 +70,7 @@ const CardItem = ({ user, handleDeleteUser, onUpdateUser }) => {
           />
         </span>
         <span>
-          City:{" "}
+          City:{' '}
           <input
             // @ts-ignore
             value={editableUser.address.city}
@@ -83,8 +84,7 @@ const CardItem = ({ user, handleDeleteUser, onUpdateUser }) => {
         onClick={
           // @ts-ignore
           handleUpdateUser
-        }
-      >
+        }>
         Update User
       </button>
     </div>
@@ -95,14 +95,13 @@ const CardItem = ({ user, handleDeleteUser, onUpdateUser }) => {
       <div className="card-header">
         <img src={user.image} width="50px" height="100px" />
         <p>
-          <strong>
-            {user.firstName} {user.lastName}{" "}
-          </strong>{" "}
+          <Link to={`user/${user.id}`}>
+            <strong>
+              {user.firstName} {user.lastName}{' '}
+            </strong>{' '}
+          </Link>
         </p>
-        <p
-          style={{ color: "red", cursor: "pointer", marginLeft: 2 }}
-          onClick={() => handleDeleteUser(user.id)}
-        >
+        <p style={{ color: 'red', cursor: 'pointer', marginLeft: 2 }} onClick={() => handleDeleteUser(user.id)}>
           Delete
         </p>
       </div>
