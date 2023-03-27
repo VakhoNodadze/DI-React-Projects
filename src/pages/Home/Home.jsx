@@ -6,27 +6,20 @@ import './Home.scss';
 import CardItem from '../../components/Card';
 
 function Home() {
-  const [user, setUser] = useState({
-    firstName: '',
-    lastName: '',
-    avatar: '',
-    phoneNumber: '',
-    city: '',
-  });
-  const [users, setUsers] = useState([]);
+  const [products, setProducts] = useState([]);
 
   const handleValues = (event) =>
-    setUser((prev) => {
+    setProduct((prev) => {
       return { ...prev, [event.target.name]: event.target.value };
     });
 
   const handleUpdateUser = async (editedUser) => {
-    const indexOfEditedUser = users.findIndex((user) => user.id === editedUser.id);
-    const updatedUsers = [...users];
-    updatedUsers.splice(indexOfEditedUser, 1, editedUser);
-    // updatedUsers[indexOfeEditUser] = editableUser;
-    setUsers(updatedUsers);
-    await axios(`https://dummyjson.com/users/${editedUser.id}`, {
+    const indexOfEditedProduct = products.findIndex((product) => product.id === editedUser.id);
+    const updatedProducts = [...products];
+    updatedProducts.splice(indexOfEditedProduct, 1, editedUser);
+    // updatedProducts[indexOfeEditUser] = editableUser;
+    setProducts(updatedProducts);
+    await axios(`https://dummyjson.com/products/${editedUser.id}`, {
       method: 'PUT' /* or PATCH */,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -35,21 +28,21 @@ function Home() {
     });
   };
 
-  const handleAddUser = (user) => {
+  const handleAddUser = (product) => {
     const newUser = {
-      ...user,
+      ...product,
       id: Math.floor(Math.random() * 1000),
     };
-    setUsers((prev) => [...prev, newUser]);
+    setProducts((prev) => [...prev, newUser]);
   };
 
   const handleDeleteUser = async (userId) => {
-    const updatedUsers = [...users].filter((user) => user.id !== userId);
-    setUsers(updatedUsers);
-    await axios(`https://dummyjson.com/users/${userId}`, {
+    const updatedProducts = [...products].filter((product) => product.id !== userId);
+    setProducts(updatedProducts);
+    await axios(`https://dummyjson.com/products/${userId}`, {
       method: 'DELETE',
     });
-    // fetch(`https://dummyjson.com/users/${userId}`, {
+    // fetch(`https://dummyjson.com/products/${userId}`, {
     //   method: 'DELETE',
     // })
     //   .then((res) => res.json())
@@ -59,45 +52,27 @@ function Home() {
   useEffect(() => {
     const getUsers = async () => {
       const {
-        data: { users },
-      } = await axios('https://dummyjson.com/users');
-      setUsers(users);
+        data: { products },
+      } = await axios('https://dummyjson.com/products');
+      setProducts(products);
     };
 
     getUsers();
   }, []);
   return (
     <>
-      <div>
-        <div className="input-container">
-          <label>Enter your Photo URL</label>
-          <input name="avatar" placeholder="...Photo" value={user.avatar} onChange={handleValues} />
-        </div>
-        <div className="input-container">
-          <label>Enter your First Name</label>
-          <input placeholder="...John" name="firstName" value={user.firstName} onChange={handleValues} />
-        </div>
-        <div className="input-container">
-          <label>Enter your Last Name</label>
-          <input placeholder="...Doe" name="lastName" value={user.lastName} onChange={handleValues} />
-        </div>
-        <div className="input-container">
-          <label>Enter your Phone number</label>
-          <input placeholder="+995 555 123 456" name="phoneNumber" value={user.phone} onChange={handleValues} />
-        </div>
-        <div className="input-container">
-          <label>Enter your City</label>
-          <input placeholder="...Tbilisi" name="city" value={user?.address?.city} onChange={handleValues} />
-        </div>
-        <button onClick={() => handleAddUser(user)}>Add user</button>
-      </div>
       <div className="flex-wrap">
-        {users.map((user) => {
-          // if (editableUser.id === user.id) {
-          //   return renderEditableUser(user);
+        {products.map((product) => {
+          // if (editableUser.id === product.id) {
+          //   return renderEditableUser(product);
           // }
           return (
-            <CardItem key={user.id} user={user} handleDeleteUser={handleDeleteUser} onUpdateUser={handleUpdateUser} />
+            <CardItem
+              key={product.id}
+              product={product}
+              handleDeleteUser={handleDeleteUser}
+              onUpdateUser={handleUpdateUser}
+            />
           );
         })}
       </div>

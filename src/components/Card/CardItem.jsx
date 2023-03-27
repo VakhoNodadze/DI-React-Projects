@@ -3,16 +3,16 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './CardItem.scss';
 
-const CardItem = ({ user, handleDeleteUser, onUpdateUser }) => {
+const CardItem = ({ product, handleDeleteUser, onUpdateUser }) => {
   // @ts-ignore
   const [editableUser, setEditableUser] = useState({});
 
-  const handleEditUser = (user) => {
+  const handleEditProduct = (product) => {
     setEditableUser((prev) => {
-      if (prev.id === user.id) {
+      if (prev.id === product.id) {
         return {};
       }
-      return user;
+      return product;
     });
   };
 
@@ -22,8 +22,8 @@ const CardItem = ({ user, handleDeleteUser, onUpdateUser }) => {
     });
   };
 
-  const handleUpdateUser = () => {
-    onUpdateUser?.(editableUser);
+  const handleUpdateProduct = () => {
+    onUpdateUser?.(editableProduct);
     setEditableUser({});
   };
 
@@ -34,14 +34,14 @@ const CardItem = ({ user, handleDeleteUser, onUpdateUser }) => {
         <img
           src={
             // @ts-ignore
-            editableUser.image
+            product.images[0]
           }
           width="50px"
           height="100px"
         />
         <span>
-          {/* <strong>{user.firstName} </strong>
-          <strong> {user.lastName} </strong> */}
+          {/* <strong>{product.firstName} </strong>
+          <strong> {product.lastName} </strong> */}
           <input
             // @ts-ignore
             value={editableUser.firstName}
@@ -83,37 +83,35 @@ const CardItem = ({ user, handleDeleteUser, onUpdateUser }) => {
       <button
         onClick={
           // @ts-ignore
-          handleUpdateUser
+          handleUpdateProduct
         }>
-        Update User
+        Update Product
       </button>
     </div>
   );
 
   const renderUser = () => (
-    <div className="card" key={user.id}>
+    <div className="card" key={product.id}>
       <div className="card-header">
-        <img src={user.image} width="50px" height="100px" />
+        <img src={product.images[0]} width="50px" height="100px" />
         <p>
-          <Link to={`user/${user.id}`}>
-            <strong>
-              {user.firstName} {user.lastName}{' '}
-            </strong>{' '}
+          <Link to={`product/${product.id}`}>
+            <strong>{product.title}</strong>{' '}
           </Link>
         </p>
-        <p style={{ color: 'red', cursor: 'pointer', marginLeft: 2 }} onClick={() => handleDeleteUser(user.id)}>
+        <p style={{ color: 'red', cursor: 'pointer', marginLeft: 2 }} onClick={() => handleDeleteUser(product.id)}>
           Delete
         </p>
       </div>
       <div className="card-info">
         <p>
-          Phone number: <strong>{user?.phone}</strong>
+          Brand: <strong>{product?.brand}</strong>
         </p>
         <p>
-          City: <strong> {user?.address?.city} </strong>
+          Category: <strong> {product?.category} </strong>
         </p>
       </div>
-      <button onClick={() => handleEditUser(user)}>Edit User</button>
+      <button onClick={() => handleEditProduct(product)}>Edit Product</button>
     </div>
   );
 
