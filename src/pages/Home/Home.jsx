@@ -5,7 +5,7 @@ import axios from 'axios';
 import './Home.scss';
 import CardItem from '../../components/Card';
 
-function Home() {
+function Home({ onAddItemsToCart }) {
   const [products, setProducts] = useState([]);
 
   const handleValues = (event) =>
@@ -13,7 +13,7 @@ function Home() {
       return { ...prev, [event.target.name]: event.target.value };
     });
 
-  const handleUpdateUser = async (editedUser) => {
+  const handleUpdateProduct = async (editedUser) => {
     const indexOfEditedProduct = products.findIndex((product) => product.id === editedUser.id);
     const updatedProducts = [...products];
     updatedProducts.splice(indexOfEditedProduct, 1, editedUser);
@@ -28,15 +28,7 @@ function Home() {
     });
   };
 
-  const handleAddUser = (product) => {
-    const newUser = {
-      ...product,
-      id: Math.floor(Math.random() * 1000),
-    };
-    setProducts((prev) => [...prev, newUser]);
-  };
-
-  const handleDeleteUser = async (userId) => {
+  const handleDeleteProduct = async (userId) => {
     const updatedProducts = [...products].filter((product) => product.id !== userId);
     setProducts(updatedProducts);
     await axios(`https://dummyjson.com/products/${userId}`, {
@@ -70,8 +62,9 @@ function Home() {
             <CardItem
               key={product.id}
               product={product}
-              handleDeleteUser={handleDeleteUser}
-              onUpdateUser={handleUpdateUser}
+              handleDeleteProduct={handleDeleteProduct}
+              onUpdateProduct={handleUpdateProduct}
+              onAddItemsToCart={onAddItemsToCart}
             />
           );
         })}

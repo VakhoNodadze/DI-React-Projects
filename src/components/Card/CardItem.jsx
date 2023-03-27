@@ -3,12 +3,12 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './CardItem.scss';
 
-const CardItem = ({ product, handleDeleteUser, onUpdateUser }) => {
+const CardItem = ({ product, handleDeleteProduct, onUpdateProduct, onAddItemsToCart }) => {
   // @ts-ignore
-  const [editableUser, setEditableUser] = useState({});
+  const [editableProduct, setEditableProduct] = useState({});
 
   const handleEditProduct = (product) => {
-    setEditableUser((prev) => {
+    setEditableProduct((prev) => {
       if (prev.id === product.id) {
         return {};
       }
@@ -17,18 +17,18 @@ const CardItem = ({ product, handleDeleteUser, onUpdateUser }) => {
   };
 
   const handlEditValues = (event) => {
-    setEditableUser((prev) => {
+    setEditableProduct((prev) => {
       return { ...prev, [event.target.name]: event.target.value };
     });
   };
 
   const handleUpdateProduct = () => {
-    onUpdateUser?.(editableProduct);
-    setEditableUser({});
+    onUpdateProduct?.(editableProduct);
+    setEditableProduct({});
   };
 
   // @ts-ignore
-  const renderEditableUser = () => (
+  const renderEditableProduct = () => (
     <div className="card">
       <div className="card-header">
         <img
@@ -44,14 +44,14 @@ const CardItem = ({ product, handleDeleteUser, onUpdateUser }) => {
           <strong> {product.lastName} </strong> */}
           <input
             // @ts-ignore
-            value={editableUser.firstName}
-            name="firstName"
+            value={editableProduct.title}
+            name="title"
             // @ts-ignore
             onChange={handlEditValues}
           />
           <input
             // @ts-ignore
-            value={editableUser.lastName}
+            value={editableProduct.lastName}
             name="lastName"
             // @ts-ignore
             onChange={handlEditValues}
@@ -63,7 +63,7 @@ const CardItem = ({ product, handleDeleteUser, onUpdateUser }) => {
           Phone number:{' '}
           <input
             // @ts-ignore
-            value={editableUser.phone}
+            value={editableProduct.phone}
             name="phoneNumber"
             // @ts-ignore
             onChange={handlEditValues}
@@ -73,7 +73,7 @@ const CardItem = ({ product, handleDeleteUser, onUpdateUser }) => {
           City:{' '}
           <input
             // @ts-ignore
-            value={editableUser.address.city}
+            value={editableProduct.brand}
             name="city"
             // @ts-ignore
             onChange={handlEditValues}
@@ -90,7 +90,33 @@ const CardItem = ({ product, handleDeleteUser, onUpdateUser }) => {
     </div>
   );
 
-  const renderUser = () => (
+  const handleAddProductsToCart = (product) => {
+    // onAddItemsToCart((prev) => {
+    //   const isProductExist = prev.find((item) => item.id === product.id);
+    //   if (isProductExist) {
+    //     return prev.map((item) => {
+    //       if (item.id === product.id) {
+    //         return { ...item, quantity: item.quantity + 1 };
+    //       }
+    //       return item;
+    //     });
+    //   }
+    //   return [...prev, { ...product, quantity: 1 }];
+    // });
+    onAddItemsToCart((prev) => {
+      const indexOfItem = prev.findIndex((item) => item.id === product.id);
+      if (indexOfItem === -1) {
+        return [...prev, { ...product, quantity: 1 }];
+      }
+      const newProducts = [...prev];
+      const existingProduct = newProducts[indexOfItem];
+      const updatedProduct = { ...existingProduct, quantity: existingProduct.quantity + 1 };
+      newProducts[indexOfItem] = updatedProduct;
+      return newProducts;
+    });
+  };
+
+  const renderProduct = () => (
     <div className="card" key={product.id}>
       <div className="card-header">
         <img src={product.images[0]} width="50px" height="100px" />
@@ -99,7 +125,7 @@ const CardItem = ({ product, handleDeleteUser, onUpdateUser }) => {
             <strong>{product.title}</strong>{' '}
           </Link>
         </p>
-        <p style={{ color: 'red', cursor: 'pointer', marginLeft: 2 }} onClick={() => handleDeleteUser(product.id)}>
+        <p style={{ color: 'red', cursor: 'pointer', marginLeft: 2 }} onClick={() => handleDeleteProduct(product.id)}>
           Delete
         </p>
       </div>
@@ -112,10 +138,13 @@ const CardItem = ({ product, handleDeleteUser, onUpdateUser }) => {
         </p>
       </div>
       <button onClick={() => handleEditProduct(product)}>Edit Product</button>
+      <button style={{ marginTop: '10px' }} onClick={() => handleAddProductsToCart(product)}>
+        Add To Cart
+      </button>
     </div>
   );
 
-  return <>{editableUser.id ? renderEditableUser() : renderUser()}</>;
+  return <>{editableProduct.id ? renderEditableProduct() : renderProduct()}</>;
 };
 
 export default CardItem;

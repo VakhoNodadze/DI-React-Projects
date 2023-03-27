@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 
-const Product = () => {
+const Product = ({ onAddItemsToCart }) => {
   const { id } = useParams();
 
   const [product, setProduct] = useState({});
