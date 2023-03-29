@@ -5,7 +5,7 @@ import axios from 'axios';
 import './Home.scss';
 import CardItem from '../../components/Card';
 
-function Home({ onAddItemsToCart }) {
+function Home({ handleAddItemsToCart, handleDeleteProductsFromCart }) {
   const [products, setProducts] = useState([]);
 
   const handleValues = (event) =>
@@ -28,13 +28,13 @@ function Home({ onAddItemsToCart }) {
     });
   };
 
-  const handleDeleteProduct = async (userId) => {
-    const updatedProducts = [...products].filter((product) => product.id !== userId);
+  const handleDeleteProduct = async (productId) => {
+    const updatedProducts = [...products].filter((product) => product.id !== productId);
     setProducts(updatedProducts);
-    await axios(`https://dummyjson.com/products/${userId}`, {
+    await axios(`https://dummyjson.com/products/${productId}`, {
       method: 'DELETE',
     });
-    // fetch(`https://dummyjson.com/products/${userId}`, {
+    // fetch(`https://dummyjson.com/products/${productId}`, {
     //   method: 'DELETE',
     // })
     //   .then((res) => res.json())
@@ -51,6 +51,7 @@ function Home({ onAddItemsToCart }) {
 
     getUsers();
   }, []);
+
   return (
     <>
       <div className="flex-wrap">
@@ -64,7 +65,8 @@ function Home({ onAddItemsToCart }) {
               product={product}
               handleDeleteProduct={handleDeleteProduct}
               onUpdateProduct={handleUpdateProduct}
-              onAddItemsToCart={onAddItemsToCart}
+              handleAddItemsToCart={handleAddItemsToCart}
+              handleDeleteProductsFromCart={handleDeleteProductsFromCart}
             />
           );
         })}
