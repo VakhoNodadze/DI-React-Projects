@@ -8,11 +8,6 @@ import CardItem from '../../components/Card';
 function Home({ handleAddItemsToCart, handleDeleteProductsFromCart }) {
   const [products, setProducts] = useState([]);
 
-  const handleValues = (event) =>
-    setProduct((prev) => {
-      return { ...prev, [event.target.name]: event.target.value };
-    });
-
   const handleUpdateProduct = async (editedUser) => {
     const indexOfEditedProduct = products.findIndex((product) => product.id === editedUser.id);
     const updatedProducts = [...products];
@@ -42,14 +37,14 @@ function Home({ handleAddItemsToCart, handleDeleteProductsFromCart }) {
   };
 
   useEffect(() => {
-    const getUsers = async () => {
+    const getProducts = async () => {
       const {
         data: { products },
       } = await axios('https://dummyjson.com/products');
       setProducts(products);
     };
 
-    getUsers();
+    getProducts();
   }, []);
 
   return (

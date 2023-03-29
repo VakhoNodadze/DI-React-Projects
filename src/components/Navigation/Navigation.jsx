@@ -1,9 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import './Navigation.scss';
 
 const Navigation = ({ cartSize }) => {
+  const navigate = useNavigate();
+
+  // დავალება: ამოიღეთ ტოკენი ლოქალ სთორიჯიდან, პარსირება
+  const logOut = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
+
   return (
     <header className="container">
       <nav className="subcontainer">
@@ -15,6 +23,7 @@ const Navigation = ({ cartSize }) => {
             <Link to="/cart">Cart {cartSize}</Link>
           </li>
         </ul>
+        <button onClick={logOut}>Log out</button>
       </nav>
     </header>
   );

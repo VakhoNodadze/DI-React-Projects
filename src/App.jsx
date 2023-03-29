@@ -1,14 +1,17 @@
 // @ts-nocheck
-import { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 
 import './App.scss';
 import Navigation from './components/Navigation';
 import Home from './pages/Home';
 import Product from './pages/Product';
 import Cart from './pages/Cart';
+import Login from './pages/Login';
 
-function App() {
+import { isUserAuthenticated } from './helpers/auth';
+
+const InnerRoutes = () => {
   const [cartItems, setCartItems] = useState([]);
 
   const handleAddProductsToCart = (product) => {
@@ -37,7 +40,6 @@ function App() {
       return newProducts.filter((item) => item.quantity > 0);
     });
   };
-
   return (
     <>
       <Navigation cartSize={cartItems.length} />
@@ -54,10 +56,28 @@ function App() {
         />
         <Route index path="/product/:id" element={<Product handleAddItemsToCart={handleAddProductsToCart} />} />
         <Route
-          index
           path="/cart"
           element={<Cart cartItems={cartItems} handleDeleteProductsFromCart={handleDeleteProductsFromCart} />}
         />
+      </Routes>
+    </>
+  );
+};
+
+function App() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isUserAuthenticated()) navigate('/login');
+    // if (isUserAuthenticated()) {
+    //   window.location.href = '/';
+    // }
+  }, [isUserAuthenticated()]);
+  return (
+    <>
+      <Routes>
+        <Route path="/*" element={<InnerRoutes />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </>
   );

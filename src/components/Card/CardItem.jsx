@@ -45,7 +45,6 @@ const CardItem = ({
   const location = useLocation();
 
   const handleEditProduct = (product) => {
-    console.log('handleEditProduct');
     setEditableProduct((prev) => {
       if (prev.id === product.id) {
         return {};
@@ -55,7 +54,6 @@ const CardItem = ({
   };
 
   const handlEditValues = (event) => {
-    console.log('handlEditValues');
     setEditableProduct((prev) => {
       return { ...prev, [event.target.name]: event.target.value };
     });

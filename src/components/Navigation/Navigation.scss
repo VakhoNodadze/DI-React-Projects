@@ -3,15 +3,29 @@
   .subcontainer {
     width: 80%;
     margin: 0 auto;
+    display: flex;
+    align-items: center;
     ul {
       display: flex;
       list-style: none;
+      width: 80%;
       li {
         color: white;
         padding: 10px;
         a {
           color: white;
         }
+      }
+    }
+    button {
+      padding: 5px;
+      background-color: transparent;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.5s;
+      &:hover {
+        background-color: #fff;
+        color: rgb(97, 97, 181);
       }
     }
   }
