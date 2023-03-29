@@ -1,11 +1,50 @@
 // @ts-nocheck
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useMemo } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import './CardItem.scss';
 
-const CardItem = ({ product, handleDeleteProduct, onUpdateProduct, onAddItemsToCart }) => {
+const CartProductItem = ({ product, handleDeleteProductFromCart }) => {
+  return (
+    <div className="card">
+      <div className="card-header">
+        <img src={product.images[0]} width="50px" height="100px" />
+        <p>
+          <Link to={`product/${product.id}`}>
+            <strong>{product.title}</strong>{' '}
+          </Link>
+        </p>
+        <p
+          style={{ color: 'red', cursor: 'pointer', marginLeft: 2 }}
+          onClick={() => handleDeleteProductFromCart(product.id)}>
+          Remove
+        </p>
+      </div>
+      <div className="card-info">
+        <p>
+          Brand: <strong>{product?.brand}</strong>
+        </p>
+        <p>
+          Category: <strong> {product?.category} </strong>
+        </p>
+        <p>
+          Quantity: <strong>{product.quantity}</strong>{' '}
+        </p>
+      </div>
+    </div>
+  );
+};
+
+const CardItem = ({
+  product,
+  handleDeleteProduct,
+  onUpdateProduct,
+  handleAddProductsToCart,
+  handleDeleteProductFromCart,
+}) => {
   // @ts-ignore
   const [editableProduct, setEditableProduct] = useState({});
+
+  const location = useLocation();
 
   const handleEditProduct = (product) => {
     setEditableProduct((prev) => {
@@ -90,34 +129,8 @@ const CardItem = ({ product, handleDeleteProduct, onUpdateProduct, onAddItemsToC
     </div>
   );
 
-  const handleAddProductsToCart = (product) => {
-    // onAddItemsToCart((prev) => {
-    //   const isProductExist = prev.find((item) => item.id === product.id);
-    //   if (isProductExist) {
-    //     return prev.map((item) => {
-    //       if (item.id === product.id) {
-    //         return { ...item, quantity: item.quantity + 1 };
-    //       }
-    //       return item;
-    //     });
-    //   }
-    //   return [...prev, { ...product, quantity: 1 }];
-    // });
-    onAddItemsToCart((prev) => {
-      const indexOfItem = prev.findIndex((item) => item.id === product.id);
-      if (indexOfItem === -1) {
-        return [...prev, { ...product, quantity: 1 }];
-      }
-      const newProducts = [...prev];
-      const existingProduct = newProducts[indexOfItem];
-      const updatedProduct = { ...existingProduct, quantity: existingProduct.quantity + 1 };
-      newProducts[indexOfItem] = updatedProduct;
-      return newProducts;
-    });
-  };
-
   const renderProduct = () => (
-    <div className="card" key={product.id}>
+    <div className="card">
       <div className="card-header">
         <img src={product.images[0]} width="50px" height="100px" />
         <p>
@@ -144,7 +157,18 @@ const CardItem = ({ product, handleDeleteProduct, onUpdateProduct, onAddItemsToC
     </div>
   );
 
-  return <>{editableProduct.id ? renderEditableProduct() : renderProduct()}</>;
+  const renderContent = useMemo(() => {
+    console.log('render content');
+    if (location.pathname === '/cart') {
+      return <CartProductItem product={product} handleDeleteProductFromCart={handleDeleteProductFromCart} />;
+    }
+    if (editableProduct.id) {
+      return renderEditableProduct();
+    }
+    return renderProduct();
+  }, [editableProduct.id, product.quantity]);
+
+  return <>{renderContent}</>;
 };
 
 export default CardItem;
