@@ -1,9 +1,13 @@
 // @ts-nocheck
 import React, { useState, useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import './CardItem.scss';
+import { Typography, Button, Stack } from '@mui/material';
 
-const CartProductItem = ({ product, handleDeleteProductFromCart }) => {
+import './CardItem.scss';
+import { useStore } from '../../store/StoreContext';
+
+const CartProductItem = ({ product }) => {
+  const { handleDeleteProductFromCart } = useStore();
   return (
     <div className="card">
       <div className="card-header">
@@ -34,14 +38,9 @@ const CartProductItem = ({ product, handleDeleteProductFromCart }) => {
   );
 };
 
-const CardItem = ({
-  product,
-  handleDeleteProduct,
-  onUpdateProduct,
-  handleAddProductsToCart,
-  handleDeleteProductFromCart,
-}) => {
-  // @ts-ignore
+const CardItem = ({ product, handleDeleteProduct, onUpdateProduct }) => {
+  const { handleAddProductsToCart } = useStore();
+
   const [editableProduct, setEditableProduct] = useState({});
 
   const location = useLocation();
@@ -138,29 +137,37 @@ const CardItem = ({
             <strong>{product.title}</strong>{' '}
           </Link>
         </p>
-        <p style={{ color: 'red', cursor: 'pointer', marginLeft: 2 }} onClick={() => handleDeleteProduct(product.id)}>
+        <Typography
+          color="error"
+          sx={{ cursor: 'pointer', marginLeft: 2 }}
+          onClick={() => handleDeleteProduct(product.id)}>
           Delete
-        </p>
+        </Typography>
       </div>
       <div className="card-info">
-        <p>
+        <Typography color="text">
           Brand: <strong>{product?.brand}</strong>
-        </p>
-        <p>
+        </Typography>
+        <Typography>
           Category: <strong> {product?.category} </strong>
-        </p>
+        </Typography>
       </div>
-      <button onClick={() => handleEditProduct(product)}>Edit Product</button>
-      <button style={{ marginTop: '10px' }} onClick={() => handleAddProductsToCart(product)}>
+      <Button variant="outlined" color="info" onClick={() => handleEditProduct(product)}>
+        Edit Product
+      </Button>
+      <Button
+        variant="contained"
+        color="success"
+        sx={{ marginTop: '10px' }}
+        onClick={() => handleAddProductsToCart(product)}>
         Add To Cart
-      </button>
+      </Button>
     </div>
   );
 
   const renderContent = useMemo(() => {
-    console.log('render content');
     if (location.pathname === '/cart') {
-      return <CartProductItem product={product} handleDeleteProductFromCart={handleDeleteProductFromCart} />;
+      return <CartProductItem product={product} />;
     }
     if (editableProduct.id) {
       return renderEditableProduct();

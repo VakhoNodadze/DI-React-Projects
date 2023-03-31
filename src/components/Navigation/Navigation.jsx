@@ -1,10 +1,14 @@
+// @ts-nocheck
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 
 import './Navigation.scss';
+import { useStore } from '../../store/StoreContext';
 
-const Navigation = ({ cartSize }) => {
+const Navigation = () => {
+  const { productQuantity: cartSize, handleChangeTheme } = useStore();
+
   const navigate = useNavigate();
   const handleLogOut = () => {
     localStorage.removeItem('token');
@@ -25,6 +29,9 @@ const Navigation = ({ cartSize }) => {
         <Button variant="contained" color="error" onClick={handleLogOut}>
           Log out
         </Button>
+        <Typography variant="subtitle1" color="white" onClick={handleChangeTheme}>
+          Change Theme
+        </Typography>
       </nav>
     </header>
   );

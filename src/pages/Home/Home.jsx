@@ -1,12 +1,16 @@
 // @ts-nocheck
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { Typography } from '@mui/material';
 
 import './Home.scss';
+import { StoreContext } from '../../store/StoreContext';
 import CardItem from '../../components/Card';
 
-function Home({ handleAddProductsToCart, handleDeleteProductFromCart }) {
+function Home() {
   const [products, setProducts] = useState([]);
+
+  // const { handleChangeTheme } = useContext(StoreContext);
 
   const handleValues = (event) =>
     setProduct((prev) => {
@@ -64,8 +68,6 @@ function Home({ handleAddProductsToCart, handleDeleteProductFromCart }) {
               product={product}
               handleDeleteProduct={handleDeleteProduct}
               onUpdateProduct={handleUpdateProduct}
-              handleAddProductsToCart={handleAddProductsToCart}
-              handleDeleteProductFromCart={handleDeleteProductFromCart}
             />
           );
         })}
