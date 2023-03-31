@@ -4,9 +4,12 @@ import axios from 'axios';
 
 import './Home.scss';
 import CardItem from '../../components/Card';
+import { useStore } from '../../store/StoreContext';
 
-function Home({ handleAddProductsToCart, handleDeleteProductFromCart }) {
+function Home() {
   const [products, setProducts] = useState([]);
+
+  const { handleAddProductsToCart, handleDeleteProductFromCart } = useStore();
 
   const handleValues = (event) =>
     setProduct((prev) => {

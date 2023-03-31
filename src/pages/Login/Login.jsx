@@ -46,7 +46,7 @@ const Login = () => {
   };
 
   return (
-    <div style={{ padding: 30 }}>
+    <div>
       <Paper>
         <Grid container spacing={3} alignItems={'center'}>
           <Grid item xs={12}>
