@@ -8,7 +8,7 @@ export const useStore = () => useContext(StoreContext);
 
 const StoreProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
-  const [themeMode, setThemeMode] = useState('dark');
+  const [themeMode, setThemeMode] = useState('light');
 
   const handleAddProductsToCart = (product) => {
     // onAddItemsToCart((prev) => {

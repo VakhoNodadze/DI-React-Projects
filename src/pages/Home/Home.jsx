@@ -6,6 +6,7 @@ import { Typography } from '@mui/material';
 import './Home.scss';
 import { StoreContext } from '../../store/StoreContext';
 import CardItem from '../../components/Card';
+import { getAllProducts } from '../../helpers/services/products';
 
 function Home() {
   const [products, setProducts] = useState([]);
@@ -46,14 +47,14 @@ function Home() {
   };
 
   useEffect(() => {
-    const getUsers = async () => {
+    const getProducts = async () => {
       const {
         data: { products },
-      } = await axios('https://dummyjson.com/products');
+      } = await getAllProducts();
       setProducts(products);
     };
 
-    getUsers();
+    getProducts();
   }, []);
   return (
     <>
