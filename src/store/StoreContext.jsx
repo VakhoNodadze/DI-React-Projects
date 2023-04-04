@@ -13,8 +13,6 @@ const initialState = {
 };
 
 const StoreProvider = ({ children }) => {
-  // const [cartItems, setCartItems] = useState([]);
-  // const [themeMode, setThemeMode] = useState('light');
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const productQuantity = useMemo(() => {
