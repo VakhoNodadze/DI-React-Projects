@@ -11,13 +11,6 @@ import { getAllProducts } from '../../helpers/services/products';
 function Home() {
   const [products, setProducts] = useState([]);
 
-  // const { handleChangeTheme } = useContext(StoreContext);
-
-  const handleValues = (event) =>
-    setProduct((prev) => {
-      return { ...prev, [event.target.name]: event.target.value };
-    });
-
   const handleUpdateProduct = async (editedUser) => {
     const indexOfEditedProduct = products.findIndex((product) => product.id === editedUser.id);
     const updatedProducts = [...products];
@@ -39,11 +32,6 @@ function Home() {
     await axios(`https://dummyjson.com/products/${userId}`, {
       method: 'DELETE',
     });
-    // fetch(`https://dummyjson.com/products/${userId}`, {
-    //   method: 'DELETE',
-    // })
-    //   .then((res) => res.json())
-    //   .then(console.log);
   };
 
   useEffect(() => {

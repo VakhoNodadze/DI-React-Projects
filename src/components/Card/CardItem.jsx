@@ -1,13 +1,14 @@
 // @ts-nocheck
 import React, { useState, useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Typography, Button, Stack } from '@mui/material';
+import { Typography, Button } from '@mui/material';
 
 import './CardItem.scss';
 import { useStore } from '../../store/StoreContext';
+import { addItemsToCart, deleteItemsFromCart } from '../../store/actions';
 
 const CartProductItem = ({ product }) => {
-  const { handleDeleteProductFromCart } = useStore();
+  const { dispatch } = useStore();
   return (
     <div className="card">
       <div className="card-header">
@@ -19,7 +20,7 @@ const CartProductItem = ({ product }) => {
         </p>
         <p
           style={{ color: 'red', cursor: 'pointer', marginLeft: 2 }}
-          onClick={() => handleDeleteProductFromCart(product.id)}>
+          onClick={() => dispatch(deleteItemsFromCart(product))}>
           Remove
         </p>
       </div>
@@ -39,7 +40,7 @@ const CartProductItem = ({ product }) => {
 };
 
 const CardItem = ({ product, handleDeleteProduct, onUpdateProduct }) => {
-  const { handleAddProductsToCart } = useStore();
+  const { dispatch } = useStore();
 
   const [editableProduct, setEditableProduct] = useState({});
 
@@ -159,7 +160,7 @@ const CardItem = ({ product, handleDeleteProduct, onUpdateProduct }) => {
         variant="contained"
         color="success"
         sx={{ marginTop: '10px' }}
-        onClick={() => handleAddProductsToCart(product)}>
+        onClick={() => dispatch(addItemsToCart(product))}>
         Add To Cart
       </Button>
     </div>
