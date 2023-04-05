@@ -1,12 +1,43 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
+import React, { useMemo, useState, useEffect } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 
+import './App.css';
+import Navigation from './components/Navigation';
+import Home from './pages/Home';
+import Product from './pages/Product';
+import Cart from './pages/Cart';
+import Login from './pages/Login';
+
+import { isUserAuthenticated } from './helpers/auth';
+
+function ProtectedRoute() {
+  return (
+    <>
+      <Navigation />
+      <Routes>
+        <Route index path="/" element={<Home />} />
+        <Route index path="/product/:id" element={<Product />} />
+        <Route index path="/cart" element={<Cart />} />
+      </Routes>
+    </>
+  );
+}
 function App() {
-  const [count, setCount] = useState(0);
+  const navigate = useNavigate();
 
-  return <div className="App"></div>;
+  useEffect(() => {
+    if (!isUserAuthenticated()) navigate('/login');
+    if (isUserAuthenticated()) {
+      navigate('/');
+    }
+  }, [isUserAuthenticated()]);
+
+  return (
+    <Routes>
+      <Route path="/*" element={<ProtectedRoute />} />
+      <Route path="/login" element={<Login />} />
+    </Routes>
+  );
 }
 
 export default App;
