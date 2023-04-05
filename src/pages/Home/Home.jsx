@@ -4,34 +4,26 @@ import axios from 'axios';
 import { Typography } from '@mui/material';
 
 import './Home.scss';
-import { StoreContext } from '../../store/StoreContext';
-import CardItem from '../../components/Card';
-import { getAllProducts } from '../../helpers/services/products';
+import { StoreContext } from '@/store/StoreContext';
+import CardItem from '@/components/Card';
+import { getAllProducts, deleteProduct, changeProduct } from '@/helpers/services/products';
 
 function Home() {
   const [products, setProducts] = useState([]);
 
-  const handleUpdateProduct = async (editedUser) => {
-    const indexOfEditedProduct = products.findIndex((product) => product.id === editedUser.id);
+  const handleUpdateProduct = async (editedProduct) => {
+    const indexOfEditedProduct = products.findIndex((product) => product.id === editedProduct.id);
     const updatedProducts = [...products];
-    updatedProducts.splice(indexOfEditedProduct, 1, editedUser);
+    updatedProducts.splice(indexOfEditedProduct, 1, editedProduct);
     // updatedProducts[indexOfeEditUser] = editableUser;
     setProducts(updatedProducts);
-    await axios(`https://dummyjson.com/products/${editedUser.id}`, {
-      method: 'PUT' /* or PATCH */,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ...editedUser,
-      }),
-    });
+    await changeProduct(editedProduct);
   };
 
-  const handleDeleteProduct = async (userId) => {
-    const updatedProducts = [...products].filter((product) => product.id !== userId);
+  const handleDeleteProduct = async (productId) => {
+    const updatedProducts = [...products].filter((product) => product.id !== productId);
     setProducts(updatedProducts);
-    await axios(`https://dummyjson.com/products/${userId}`, {
-      method: 'DELETE',
-    });
+    await deleteProduct(productId);
   };
 
   useEffect(() => {

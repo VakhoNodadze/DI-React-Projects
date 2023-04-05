@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 
-import { useStore } from '../../store/StoreContext';
+import { useStore } from '@/store/StoreContext';
 
 const Product = () => {
   const { id } = useParams();

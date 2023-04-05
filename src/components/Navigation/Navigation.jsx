@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button, Typography } from '@mui/material';
 
 import './Navigation.scss';
-import { useStore } from '../../store/StoreContext';
+import { useStore } from '@/store/StoreContext';
 
 const Navigation = () => {
   const { productQuantity: cartSize, handleChangeTheme } = useStore();

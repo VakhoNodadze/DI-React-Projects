@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Grid, TextField, Paper, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { login } from '../../helpers/services/auth';
 
 import axios from 'axios';
 
@@ -34,10 +35,7 @@ const Login = () => {
     //   }),
     // });
     try {
-      const { data } = await axios.post('https://dummyjson.com/auth/login', {
-        username: user.username,
-        password: user.password,
-      });
+      const { data } = await login(user.username, user.password);
       localStorage.setItem('token', data.token);
       navigate('/');
     } catch (err) {

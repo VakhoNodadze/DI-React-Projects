@@ -21,7 +21,7 @@ const StoreProvider = ({ children }) => {
 
   const theme = createTheme({
     palette: {
-      mode: theme || 'light',
+      mode: state.theme || 'light',
       text: {
         primary: 'rgba(13, 26, 44, 0.87)',
         secondary: 'rgba(13, 26, 44, 0.6)',

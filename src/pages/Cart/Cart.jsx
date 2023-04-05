@@ -1,8 +1,8 @@
 // @ts-nocheck
 import React from 'react';
 
-import CardItem from '../../components/Card';
-import { useStore } from '../../store/StoreContext';
+import CardItem from '@/components/Card';
+import { useStore } from '@/store/StoreContext';
 
 const Cart = () => {
   const { cartItems } = useStore();

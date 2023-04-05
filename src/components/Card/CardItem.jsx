@@ -4,8 +4,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { Typography, Button } from '@mui/material';
 
 import './CardItem.scss';
-import { useStore } from '../../store/StoreContext';
-import { addItemsToCart, deleteItemsFromCart } from '../../store/actions';
+import { useStore } from '@/store/StoreContext';
+import { addItemsToCart, deleteItemsFromCart } from '@/store/actions';
 
 const CartProductItem = ({ product }) => {
   const { dispatch } = useStore();
@@ -80,7 +80,7 @@ const CardItem = ({ product, handleDeleteProduct, onUpdateProduct }) => {
         />
         <span>
           {/* <strong>{product.firstName} </strong>
-          <strong> {product.lastName} </strong> */}
+          <strong> {product.description} </strong> */}
           <input
             // @ts-ignore
             value={editableProduct.title}
@@ -90,8 +90,8 @@ const CardItem = ({ product, handleDeleteProduct, onUpdateProduct }) => {
           />
           <input
             // @ts-ignore
-            value={editableProduct.lastName}
-            name="lastName"
+            value={editableProduct.description}
+            name="description"
             // @ts-ignore
             onChange={handlEditValues}
           />
@@ -99,11 +99,11 @@ const CardItem = ({ product, handleDeleteProduct, onUpdateProduct }) => {
       </div>
       <div className="card-info">
         <span>
-          Phone number:{' '}
+          Price:{' '}
           <input
             // @ts-ignore
-            value={editableProduct.phone}
-            name="phoneNumber"
+            value={editableProduct.price}
+            name="price"
             // @ts-ignore
             onChange={handlEditValues}
           />
@@ -113,7 +113,7 @@ const CardItem = ({ product, handleDeleteProduct, onUpdateProduct }) => {
           <input
             // @ts-ignore
             value={editableProduct.brand}
-            name="city"
+            name="brand"
             // @ts-ignore
             onChange={handlEditValues}
           />
@@ -166,6 +166,7 @@ const CardItem = ({ product, handleDeleteProduct, onUpdateProduct }) => {
     </div>
   );
 
+  // INPUT PROBLEM HERE! editableProduct must have all it's properties in the dependency array to work properly
   const renderContent = useMemo(() => {
     if (location.pathname === '/cart') {
       return <CartProductItem product={product} />;
@@ -174,7 +175,14 @@ const CardItem = ({ product, handleDeleteProduct, onUpdateProduct }) => {
       return renderEditableProduct();
     }
     return renderProduct();
-  }, [editableProduct.id, product.quantity]);
+  }, [
+    editableProduct.id,
+    editableProduct.title,
+    editableProduct.description,
+    editableProduct.price,
+    editableProduct.brand,
+    product.quantity,
+  ]);
 
   return <>{renderContent}</>;
 };
