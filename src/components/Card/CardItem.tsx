@@ -4,10 +4,10 @@ import { Typography, Button } from '@mui/material';
 
 import './CardItem.scss';
 import { useStore, TCartProduct, TBackendProduct } from '../../store/StoreContext';
-import {  deleteItemsFromCart } from '../../store/actions';
+import {  deleteItemsFromCart, addItemsToCart } from '../../store/actions';
 
 type TCartProductItemProps = {
-  product: TCartProduct;
+      product: TCartProduct;
 }
 
 const CartProductItem: FC<TCartProductItemProps> = ({ product }) => {
@@ -17,7 +17,8 @@ const CartProductItem: FC<TCartProductItemProps> = ({ product }) => {
       <div className="card-header">
         <img src={product.images[0]} width="50px" height="100px" />
         <p>
-          <Link to={`product/${product.id}`}>
+          <Link to={`product/${product.id}
+          `}>
             <strong>{product.title}</strong>
             {' '}
           </Link>
@@ -182,7 +183,7 @@ const CardItem: FC<TCardItemProps> = ({ product, handleDeleteProduct, onUpdatePr
         variant="contained"
         color="success"
         sx={{ marginTop: '10px' }}
-        onClick={() => dispatch()}
+        onClick={() => dispatch(addItemsToCart(product))}
       >
         Add To Cart
       </Button>
@@ -194,16 +195,16 @@ const CardItem: FC<TCardItemProps> = ({ product, handleDeleteProduct, onUpdatePr
     if (location.pathname === '/cart') {
       return <CartProductItem product={product as TCartProduct} />;
     }
-    if (editableProduct.id) {
+    if (editableProduct?.id) {
       return renderEditableProduct();
     }
     return renderProduct();
   }, [
-    editableProduct.id,
-    editableProduct.title,
-    editableProduct.description,
-    editableProduct.price,
-    editableProduct.brand,
+    editableProduct?.id,
+    editableProduct?.title,
+    editableProduct?.description,
+    editableProduct?.price,
+    editableProduct?.brand,
     product.quantity,
   ]);
 
