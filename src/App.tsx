@@ -7,19 +7,21 @@ import Home from './pages/Home';
 import Product from './pages/Product';
 import Cart from './pages/Cart';
 import Login from './pages/Login';
+import Checkout from './pages/Checkout';
 
 import { isUserAuthenticated } from './helpers/auth';
 
 function ProtectedRoute() {
   return (
-    <>
+    <div style={{minHeight: '100vh'}}>
       <Navigation />
       <Routes>
         <Route index path="/" element={<Home />} />
         <Route index path="/product/:id" element={<Product />} />
         <Route index path="/cart" element={<Cart />} />
+        <Route path='/checkout' element={<Checkout />} />
       </Routes>
-    </>
+    </div>
   );
 }
 function App() {
