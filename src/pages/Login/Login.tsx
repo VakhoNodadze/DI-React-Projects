@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import { Grid, TextField, Paper, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { login } from '../../helpers/services/auth';
+import React, { useState } from 'react'
+import { Grid, TextField, Paper, Button } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
+import { login } from '../../helpers/services/auth'
 
-import  { AxiosError} from 'axios';
+import { AxiosError } from 'axios'
 
 const Login = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const [user, setUser] = useState({ username: '', password: '' });
+  const [user, setUser] = useState({ username: '', password: '' })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
-  };
+    setUser({ ...user, [e.target.name]: e.target.value })
+  }
 
   const handleLogin = async () => {
     // fetch('https://dummyjson.com/auth/login', {
@@ -35,32 +35,34 @@ const Login = () => {
     //   }),
     // });
     try {
-      const { data } = await login(user.username, user.password);
-      localStorage.setItem('token', data.token);
-      navigate('/');
+      console.log('user', user)
+      const { data } = await login(user.username, user.password)
+      localStorage.setItem('token', data.token)
+      navigate('/')
     } catch (err) {
       if (err instanceof AxiosError) {
-      // 👉️ err is type Error here
-      alert(err?.response?.data.message);
-    }
+        // 👉️ err is type Error here
+        alert(err?.response?.data.message)
+      }
       console.log(err)
     }
-  };
+  }
 
   return (
     <div style={{ padding: 30 }}>
       <Paper>
         <Grid container spacing={3} alignItems={'center'}>
           <Grid item xs={12}>
-            <TextField label="Username" name="username" value={user.username} onChange={handleChange}></TextField>
+            <TextField label='Username' name='username' value={user.username} onChange={handleChange}></TextField>
           </Grid>
           <Grid item xs={12}>
             <TextField
-              label="Password"
-              name="password"
+              label='Password'
+              name='password'
               value={user.password}
               type={'password'}
-              onChange={handleChange}></TextField>
+              onChange={handleChange}
+            ></TextField>
           </Grid>
           <Grid item xs={12}>
             <Button fullWidth onClick={handleLogin}>
@@ -70,7 +72,7 @@ const Login = () => {
         </Grid>
       </Paper>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login
