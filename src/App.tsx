@@ -10,6 +10,8 @@ import Cart from './pages/Cart'
 import Login from './pages/Login'
 import Checkout from './pages/Checkout'
 
+import TodoList from './Todo-example-class/TodoList'
+
 import { isUserAuthenticated } from './helpers/auth'
 
 function ProtectedRoute() {
@@ -22,6 +24,7 @@ function ProtectedRoute() {
         <Route index path='/product/:id' element={<ProductClass />} />
         <Route index path='/cart' element={<Cart />} />
         <Route path='/checkout' element={<Checkout />} />
+        <Route path='/todo' element={<TodoList />} />
       </Routes>
     </div>
   )
