@@ -24,11 +24,7 @@ function ProtectedRoute() {
       <Routes>
         <Route index path='/' element={<Home />} />
         {/* <Route index path="/product/:id" element={<Product />} /> */}
-        <Route
-          index
-          path='/product/:id'
-          element={<ProductClass params={params} location={location} navigate={redirect} />}
-        />
+        <Route index path='/product/:id' element={<ProductClass />} />
         <Route index path='/cart' element={<Cart />} />
         <Route path='/checkout' element={<Checkout />} />
         <Route path='/todo' element={<TodoList />} />

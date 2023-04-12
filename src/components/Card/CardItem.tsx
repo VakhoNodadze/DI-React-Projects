@@ -5,6 +5,7 @@ import { Typography, Button } from '@mui/material'
 import './CardItem.scss'
 import { useStore, TCartProduct, TBackendProduct } from '../../store/StoreContext'
 import { deleteItemsFromCart, addItemsToCart } from '../../store/actions'
+import { useTranslation } from 'react-i18next'
 
 type TCartProductItemProps = {
   product: TCartProduct
@@ -12,6 +13,7 @@ type TCartProductItemProps = {
 
 const CartProductItem: FC<TCartProductItemProps> = ({ product }) => {
   const { dispatch } = useStore()
+  const { t } = useTranslation()
 
   return (
     <div className='card'>
@@ -29,18 +31,18 @@ const CartProductItem: FC<TCartProductItemProps> = ({ product }) => {
           style={{ color: 'red', cursor: 'pointer', marginLeft: 2 }}
           onClick={() => dispatch(deleteItemsFromCart(product))}
         >
-          Remove
+          {t('global.remove')}
         </p>
       </div>
       <div className='card-info'>
         <p>
-          Brand: <strong>{product?.brand}</strong>
+          {t('global.brand')}: <strong>{product?.brand}</strong>
         </p>
         <p>
-          Category: <strong> {product?.category} </strong>
+          {t('global.category')}: <strong> {product?.category} </strong>
         </p>
         <p>
-          Quantity: <strong>{product.quantity}</strong>{' '}
+          {t('global.quantity')}: <strong>{product.quantity}</strong>{' '}
         </p>
       </div>
     </div>

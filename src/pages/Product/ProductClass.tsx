@@ -12,9 +12,9 @@ type TMyState = {
 }
 
 type TMyProps = {
-  params: Readonly<Params<string>>
-  location: Location
-  navigate: NavigateFunction
+  params?: Readonly<Params<string>>
+  location?: Location
+  navigate?: NavigateFunction
 }
 
 class Product extends React.Component<TMyProps, TMyState> {
@@ -35,7 +35,8 @@ class Product extends React.Component<TMyProps, TMyState> {
   }
 
   async componentDidMount() {
-    const { data: product } = await getProductItem(this.props.params.id!)
+    console.log(this.props)
+    const { data: product } = await getProductItem(this.props?.params?.id!)
     this.setState({ product })
   }
 
