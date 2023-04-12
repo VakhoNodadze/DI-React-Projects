@@ -1,73 +1,74 @@
-import React, {
-  createContext, useContext, useReducer, useMemo,
-} from 'react';
-import { createTheme, ThemeProvider, CssBaseline } from '@mui/material';
-import reducer from './reducer';
+import React, { createContext, useContext, useReducer, useMemo } from 'react'
+import { createTheme, ThemeProvider, CssBaseline } from '@mui/material'
+import reducer from './reducer'
 
 type TStoreContexrProps = {
   dispatch: any
-  productQuantity: number;
-  theme: 'light' | 'dark';
-  cartItems: TCartProduct[];
+  productQuantity: number
+  theme: 'light' | 'dark'
+  cartItems: TCartProduct[]
 }
 
-export const StoreContext = createContext({} as TStoreContexrProps);
+export const StoreContext = createContext({} as TStoreContexrProps)
 
-export const useStore = () => useContext(StoreContext);
+export const useStore = () => useContext(StoreContext)
 
 export type TProduct = {
-  id: number;
-  title: string;
-  description: string;
-  price: number | string;
-  discountPercentage: number;
-  rating: string;
-  stock: string;
-  brand: string;
-  category: string;
-  thumbnail: string;
-  images: string[];
-  quantity?: number;
-};
+  id: number
+  title: string
+  description: string
+  price: number | string
+  discountPercentage: number
+  rating: string
+  stock: string
+  brand: string
+  category: string
+  thumbnail: string
+  images: string[]
+  quantity?: number
+}
 
 export type TBackendProduct = {
-  id: number;
-  title: string;
-  description: string;
-  price: number | string;
-  discountPercentage: number;
-  rating: string;
-  stock: string;
-  brand: string;
-  category: string;
-  thumbnail: string;
-  images: string[];
-};
+  id: number
+  title: string
+  description: string
+  price: number | string
+  discountPercentage: number
+  rating: string
+  stock: string
+  brand: string
+  category: string
+  thumbnail: string
+  images: string[]
+}
 
 export type TCartProduct = {
-  quantity: number;
-} & TBackendProduct;
+  quantity: number
+} & TBackendProduct
 
 export type TState = {
-  cartItems: TCartProduct[];
-  theme: 'light' | 'dark';
-};
+  cartItems: TCartProduct[]
+  theme: 'light' | 'dark'
+}
 
 const initialState: TState = {
   cartItems: [],
   theme: 'light',
-};
+}
 
 type StoreProps = {
   children: React.ReactNode
-};
+}
 
 function StoreProvider({ children }: StoreProps) {
   // fix the error below
   // Type 'React.Reducer<{}, {}>' is not assignable to type 'React.Reducer<TState, any>'.
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialState)
 
-  const productQuantity = useMemo(() => state.cartItems.reduce((acc: any, item: any) => acc + item.quantity, 0), [state.cartItems]);
+  const productQuantity = useMemo(
+    () => state.cartItems.reduce((acc: any, item: any) => acc + item.quantity, 0),
+    [state.cartItems]
+  )
 
   const theme = createTheme({
     palette: {
@@ -81,13 +82,13 @@ function StoreProvider({ children }: StoreProps) {
         main: '#ff000',
       },
     },
-  });
+  })
 
   const store = {
     ...state,
     dispatch,
     productQuantity,
-  };
+  }
 
   return (
     <StoreContext.Provider value={store}>
@@ -96,7 +97,7 @@ function StoreProvider({ children }: StoreProps) {
         {children}
       </ThemeProvider>
     </StoreContext.Provider>
-  );
+  )
 }
 
-export default StoreProvider;
+export default StoreProvider

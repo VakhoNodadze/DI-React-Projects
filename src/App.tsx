@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect } from 'react'
-import { Routes, Route, useNavigate } from 'react-router-dom'
+import { Routes, Route, useNavigate, useParams, useLocation } from 'react-router-dom'
 
 import './App.css'
 import Navigation from './components/Navigation'
@@ -15,13 +15,20 @@ import TodoList from './Todo-example-class/TodoList'
 import { isUserAuthenticated } from './helpers/auth'
 
 function ProtectedRoute() {
+  const redirect = useNavigate()
+  const params = useParams()
+  const location = useLocation()
   return (
     <div style={{ minHeight: '100vh' }}>
       <Navigation />
       <Routes>
         <Route index path='/' element={<Home />} />
         {/* <Route index path="/product/:id" element={<Product />} /> */}
-        <Route index path='/product/:id' element={<ProductClass />} />
+        <Route
+          index
+          path='/product/:id'
+          element={<ProductClass params={params} location={location} navigate={redirect} />}
+        />
         <Route index path='/cart' element={<Cart />} />
         <Route path='/checkout' element={<Checkout />} />
         <Route path='/todo' element={<TodoList />} />
