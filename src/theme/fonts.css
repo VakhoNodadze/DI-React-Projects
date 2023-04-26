@@ -1,0 +1,10 @@
+@font-face {
+  font-family: 'DM-Sans';
+  font-family: 'Dm Sans, Robot';
+  src: local('DM-Sans'), url('./fonts/DMSans-Regular.ttf') format('woff');
+}
+@font-face {
+  font-family: 'Roboto';
+  src: url('./fonts/Roboto-Regular.ttf'), url('./fonts/Roboto-Bold.ttf'),
+    url('./fonts/Roboto-Light.ttf') format('woff');
+}
