@@ -1,32 +1,33 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { Grid } from '@mui/material';
+
+import { saveBarbersData } from './redux/actions';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import BarberItem from '../../components/BarberCardItem';
 
 const Dashboard = () => {
-  const [data, setData] = useState<BarberItem[]>([
-    {
-      id: '',
-      firstName: '',
-      lastName: '',
-      rating: 0,
-      review: [{ author: '', score: 0, comment: '' }],
-      description: '',
-      price: 0,
-    },
-  ]);
+  const dispatch = useAppDispatch();
+
+  const { barbers } = useAppSelector((state) => state.barbersReducer);
 
   useEffect(() => {
     async function fetchData() {
       const response = await fetch('/data.json');
       const json = await response.json();
-      setData(json);
+      dispatch(saveBarbersData(json));
     }
 
     fetchData();
   }, []);
 
   return (
-    <div>
-      <h1>Dashboard</h1>
-    </div>
+    <Grid container spacing={2}>
+      {barbers?.map((barber) => (
+        <Grid item xs={4} key={barber.id}>
+          <BarberItem barber={barber} />
+        </Grid>
+      ))}
+    </Grid>
   );
 };
 

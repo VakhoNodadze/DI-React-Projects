@@ -6,7 +6,7 @@ import * as yup from 'yup';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Container from '@mui/material/Container';
 import { useFormik } from 'formik';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 interface RegisterFormData {
   firstName: string;
   lastName: string;
@@ -35,12 +35,14 @@ const validationSchema = yup.object().shape({
 });
 
 const Register = () => {
+  const navigate = useNavigate();
   const { values, handleSubmit, handleChange, errors } = useFormik({
     initialValues,
     validationSchema,
     onSubmit: (values: RegisterFormData) => {
       const users = JSON.parse(localStorage.getItem('user')!) || [];
       localStorage.setItem('user', JSON.stringify([...users, values]));
+      navigate('/login');
     },
   });
 
