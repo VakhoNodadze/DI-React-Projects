@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import { Grid } from '@mui/material';
 
-import { saveBarbersData } from './redux/actions';
+import { saveBarbersData, selectBarber } from './redux/actions';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import BarberItem from '../../components/BarberCardItem';
 
 const Dashboard = () => {
   const dispatch = useAppDispatch();
 
-  const { barbers } = useAppSelector((state) => state.barbersReducer);
+  const { barbers } = useAppSelector(({ barbersReducer }) => barbersReducer);
 
   useEffect(() => {
     async function fetchData() {
@@ -16,7 +16,6 @@ const Dashboard = () => {
       const json = await response.json();
       dispatch(saveBarbersData(json));
     }
-
     fetchData();
   }, []);
 

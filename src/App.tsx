@@ -11,15 +11,14 @@ import {
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
-
-import { isUserAuthenticated } from './utils/helpers';
+import BarberItem from './pages/BarberItem';
 
 function App() {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!isUserAuthenticated()) navigate('/login');
-  }, [isUserAuthenticated()]);
+  // useEffect(() => {
+  //   if (!isUserAuthenticated()) navigate('/login');
+  // }, [isUserAuthenticated()]);
 
   return (
     <Box
@@ -34,6 +33,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard/:barberId" element={<BarberItem />} />
       </Routes>
     </Box>
   );

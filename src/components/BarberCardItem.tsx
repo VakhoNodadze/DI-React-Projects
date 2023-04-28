@@ -1,12 +1,23 @@
 import React from 'react';
 import { Card, CardContent, Typography, Grid } from '@mui/material';
+import { selectBarber } from '../pages/Dashboard/redux/actions';
+import { useAppDispatch } from '../redux/hooks';
+import { useNavigate } from 'react-router-dom';
 
 interface CardProps {
   barber: BarberItem;
 }
 
 const BarberCardItem: React.FC<CardProps> = ({ barber }) => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const { firstName, lastName, description, rating, price } = barber;
+
+  const handleViewMore = () => {
+    dispatch(selectBarber(barber));
+    navigate(`/dashboard/${barber.id}`);
+  };
 
   return (
     <Card sx={{ width: '100%' }}>
@@ -30,6 +41,17 @@ const BarberCardItem: React.FC<CardProps> = ({ barber }) => {
           <Grid item xs={6}>
             <Typography variant="body2" color="textSecondary" component="p">
               Price: {price}
+            </Typography>
+          </Grid>
+          <Grid item xs={9}></Grid>
+          <Grid item xs={3}>
+            <Typography
+              variant="body2"
+              fontWeight="bold"
+              component="p"
+              onClick={handleViewMore}
+            >
+              View More
             </Typography>
           </Grid>
         </Grid>

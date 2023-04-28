@@ -5,9 +5,10 @@ import {
   SET_ERROR,
 } from './actions';
 import { DASHBOARD_ACTIONS } from './types';
+import { BARBERS_INITIAL_DATA } from './initialState';
 
 const defaultState: DashboardState = {
-  barbers: null,
+  barbers: BARBERS_INITIAL_DATA,
   loading: false,
   error: null,
   selectedBarber: null,
@@ -23,12 +24,12 @@ const dashboardReducer = (state = defaultState, action: DASHBOARD_ACTIONS) => {
     case SELECT_BARBER:
       return {
         ...state,
-        selectedBarber: action.payload,
+        selectedBarber: action.barber,
       };
     case SET_LOADING:
       return {
         ...state,
-        loading: action.payload,
+        loading: !state.loading,
       };
     case SET_ERROR:
       return {

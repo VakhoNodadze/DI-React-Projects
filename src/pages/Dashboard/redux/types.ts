@@ -12,12 +12,11 @@ export type SAVE_BARBERS_DATA_ACTION = {
 
 export type SELECT_BARBER_ACTION = {
   type: typeof SELECT_BARBER;
-  payload: BarberItem;
+  barber: BarberItem;
 };
 
 export type SET_LOADING_ACTION = {
   type: typeof SET_LOADING;
-  payload: boolean;
 };
 
 export type SET_ERROR_ACTION = {

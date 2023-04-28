@@ -5,10 +5,10 @@
     "lastName": "Garcia",
     "rating": 4.8,
     "review": [
-      { "author": "Michelle", "score": 5, "comment": "Great haircut!" },
+      { "author": "Michelle", "score": 4.8, "comment": "Great haircut!" },
       {
         "author": "David",
-        "score": 5,
+        "score": 3.5,
         "comment": "Friendly service and great attention to detail."
       }
     ],

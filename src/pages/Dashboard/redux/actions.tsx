@@ -19,12 +19,11 @@ export const saveBarbersData = (
 
 export const selectBarber = (barber: BarberItem): SELECT_BARBER_ACTION => ({
   type: SELECT_BARBER,
-  payload: barber,
+  barber,
 });
 
-export const setLoading = (loading: boolean): SET_LOADING_ACTION => ({
+export const setLoading = (): SET_LOADING_ACTION => ({
   type: SET_LOADING,
-  payload: loading,
 });
 
 export const setError = (error: string): SET_ERROR_ACTION => ({
