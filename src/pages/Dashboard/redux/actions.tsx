@@ -3,12 +3,14 @@ import {
   SELECT_BARBER_ACTION,
   SET_ERROR_ACTION,
   SET_LOADING_ACTION,
+  UPDATE_BARBER_REVIEW_ACTION,
 } from './types';
 
 export const SAVE_BARBERS_DATA = 'SAVE_BARBERS_DATA';
 export const SELECT_BARBER = 'SELECT_BARBER';
 export const SET_LOADING = 'SET_LOADING';
 export const SET_ERROR = 'SET_ERROR';
+export const UPDATE_BARBER_REVIEW = 'UPDATE_BARBER_REVIEW';
 
 export const saveBarbersData = (
   barberData: BarberItem[]
@@ -29,4 +31,13 @@ export const setLoading = (): SET_LOADING_ACTION => ({
 export const setError = (error: string): SET_ERROR_ACTION => ({
   type: SET_ERROR,
   payload: error,
+});
+
+export const updateBarberReview = (
+  review: Review,
+  barberId: string
+): UPDATE_BARBER_REVIEW_ACTION => ({
+  type: UPDATE_BARBER_REVIEW,
+  review,
+  barberId,
 });

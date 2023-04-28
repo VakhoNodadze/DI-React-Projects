@@ -7,6 +7,7 @@ import StarHalfIcon from '@mui/icons-material/StarHalf';
 import { useParams } from 'react-router-dom';
 
 import { useAppSelector } from '../../redux/hooks';
+import ReviewForm from '../../components/ReviewForm';
 import { isUserAuthenticated } from '../../utils/helpers';
 
 const BarberItem = () => {
@@ -77,6 +78,7 @@ const BarberItem = () => {
           </Paper>
         );
       })}
+      <ReviewForm />
     </Box>
   );
 };
