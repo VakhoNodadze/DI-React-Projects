@@ -13,6 +13,8 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import BarberItem from './pages/BarberItem';
 
+import Counter from './counter-app/Counter';
+
 function App() {
   const navigate = useNavigate();
 
@@ -29,12 +31,16 @@ function App() {
         height: '100vh',
       }}
     >
-      <Routes>
+      {/* <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashboard/:barberId" element={<BarberItem />} />
-      </Routes>
+      </Routes> */}
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <Counter initialValue={10} increaseValue={5} decreaseValue={2} />
+        <Counter initialValue={50} />
+      </div>
     </Box>
   );
 }
