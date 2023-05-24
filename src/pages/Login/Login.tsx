@@ -35,7 +35,6 @@ const Login = () => {
     //   }),
     // });
     try {
-      console.log('user', user)
       const { data } = await login(user.username, user.password)
       localStorage.setItem('token', data.token)
       navigate('/')

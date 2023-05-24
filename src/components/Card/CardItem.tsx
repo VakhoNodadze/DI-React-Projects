@@ -44,6 +44,9 @@ const CartProductItem: FC<TCartProductItemProps> = ({ product }) => {
         <p>
           {t('global.quantity')}: <strong>{product.quantity}</strong>{' '}
         </p>
+        <p>
+          {t('global.price')}: <strong>{product.price}</strong>{' '}
+        </p>
       </div>
     </div>
   )
