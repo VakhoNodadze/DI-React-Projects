@@ -6,15 +6,9 @@ type CategoryItemProps = {
   expense: number;
   category: Categories;
   budget: number;
-  handleCategoryBudget: (category: Categories, budget: number) => void;
 };
 
-const CategoryItem: FC<CategoryItemProps> = ({
-  expense,
-  category,
-  budget,
-  handleCategoryBudget,
-}) => {
+const CategoryItem: FC<CategoryItemProps> = ({ expense, category, budget }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   return (
     <Box
@@ -56,7 +50,6 @@ const CategoryItem: FC<CategoryItemProps> = ({
           open={isModalOpen}
           category={category}
           onClose={() => setIsModalOpen(false)}
-          onSave={(value) => handleCategoryBudget(category, value)}
         />
       )}
     </Box>

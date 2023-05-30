@@ -8,59 +8,53 @@ import {
   DialogActions,
   TextField,
 } from '@mui/material';
+import { useFormik } from 'formik';
 
 import { selectStyles, categoryOptions } from './utils/helpers';
+import { useStore } from './store/StoreContext';
 
 interface ChangeCategoryBudgetProps {
   open: boolean;
-  category: string;
+  category: Categories;
   onClose: () => void;
-  onSave: (value: number) => void;
 }
 
 const ChangeCategoryBudget: React.FC<ChangeCategoryBudgetProps> = ({
   open,
   category,
   onClose,
-  onSave,
 }) => {
-  const [value, setValue] = useState<number | ''>('');
-  const [selectedCategory, setSelectedCategory] = useState<string>(category);
-
-  const handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(parseFloat(event.target.value));
-  };
-
-  const handleSave = () => {
-    if (typeof value === 'number') {
-      onSave(value);
+  const { handleAddCategoryBudget } = useStore();
+  const { handleChange, setFieldValue, values, submitForm } = useFormik({
+    initialValues: {
+      category: { value: category, label: category },
+      categoryBudget: 0,
+    },
+    onSubmit: (values) => {
+      handleAddCategoryBudget(values.category.value, values.categoryBudget);
       onClose();
-    }
-  };
-
-  const handleCategoryChange = (selectedOption: any) => {
-    if (selectedOption) {
-      setSelectedCategory(selectedOption.value);
-    } else {
-      setSelectedCategory('');
-    }
-  };
+    },
+  });
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="lg">
-      <DialogTitle>Add expense</DialogTitle>
+      <DialogTitle>Add budget</DialogTitle>
       <DialogContent>
         <Select
           styles={selectStyles}
           menuPosition="fixed"
+          name="category"
           options={categoryOptions}
-          value={{ value: selectedCategory, label: selectedCategory }}
-          onChange={handleCategoryChange}
+          value={values.category}
+          onChange={(option: any) => {
+            setFieldValue('category', option);
+          }}
         />
         <TextField
           sx={{ mt: 2 }}
-          value={value}
-          onChange={handleValueChange}
+          value={values.categoryBudget}
+          name="categoryBudget"
+          onChange={handleChange}
           label="Enter a number"
           fullWidth
           variant="outlined"
@@ -70,7 +64,7 @@ const ChangeCategoryBudget: React.FC<ChangeCategoryBudgetProps> = ({
         <Button variant="outlined" onClick={onClose}>
           Cancel
         </Button>
-        <Button onClick={handleSave} variant="contained" color="primary">
+        <Button onClick={submitForm} variant="contained" color="primary">
           Save
         </Button>
       </DialogActions>

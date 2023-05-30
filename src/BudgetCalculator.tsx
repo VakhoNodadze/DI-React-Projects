@@ -1,79 +1,63 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   Container,
   Typography,
   Box,
   Paper,
   List,
-  ListItem,
   TextField,
   Button,
 } from '@mui/material';
+import { toast } from 'react-toastify';
 import Select from 'react-select';
+import { useFormik } from 'formik';
 
 import { selectStyles, categoryOptions } from './utils/helpers';
 import CategoryItem from './CategoryItem';
+import { useStore } from './store/StoreContext';
+
+type Form = {
+  category: { value: Categories; label: Categories };
+  totalBudget: number;
+  expenseValue: number;
+};
 
 const BudgetCalculator: React.FC = () => {
-  const [budgetValue, setBudgetValue] = useState<number | string>(0);
   const [totalBudget, setTotalBudget] = useState<number>(0);
-  const [expenses, setExpenses] = useState<CategoryBudget>({
-    Groceries: 0,
-    Utilities: 0,
-    Vehicle: 0,
-    Charity: 0,
-    Personal: 0,
-  });
-  const [categoryBudget, setCategoryBudget] = useState<CategoryBudget>({
-    Groceries: 400,
-    Utilities: 400,
-    Vehicle: 200,
-    Charity: 200,
-    Personal: 400,
-  });
-  const [selectedCategory, setSelectedCategory] =
-    useState<Categories>('Personal');
-  const [expenseValue, setExpenseValue] = useState<number | string>(0);
+
+  const { state, handleAddCategoryExpense } = useStore();
+
+  const { handleChange, submitForm, values, setFieldValue, resetForm } =
+    useFormik({
+      initialValues: {
+        category: { value: 'Personal', label: 'Personal' },
+        totalBudget: 0,
+        expenseValue: 0,
+      } as Form,
+      onSubmit: (values) => {
+        if (totalBudget !== values.totalBudget) {
+          setTotalBudget(values.totalBudget);
+        }
+        if (totalBudget < totalExpenses + values.expenseValue) {
+          toast('You have exceeded your budget', { type: 'error' });
+          return;
+        }
+        handleAddCategoryExpense(values.category.value, values.expenseValue);
+        resetForm();
+      },
+    });
 
   // Calculate the total expenses
-  const totalExpenses = Object.values(expenses).reduce(
-    (acc, curr) => acc + curr,
-    0
-  );
+  const totalExpenses = useMemo(() => {
+    let totalExpenses = 0;
+    Object.entries(state).forEach(([key, value]) => {
+      totalExpenses += value.expense;
+    });
+    return totalExpenses;
+  }, [state]);
 
   // Calculate the remaining budget
   const remainingBudget = totalBudget - totalExpenses;
-
-  // Function to add a new expense
-  const handleCategoryBudget = (category: Categories, budget: number) => {
-    setCategoryBudget((prev) => ({
-      ...prev,
-      [category]: budget,
-    }));
-  };
-
-  const handleTotalBudgetValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setBudgetValue(Number(e.target.value));
-  };
-  const saveTotalBudget = () => {
-    setTotalBudget(Number(budgetValue));
-    setBudgetValue('');
-  };
-
-  const handleSelectExpenseCategory = (selectedOption: any) => {
-    if (selectedOption) {
-      setSelectedCategory(selectedOption.value);
-    } else {
-      setSelectedCategory('Personal');
-    }
-  };
-
-  const handleAddExpense = () => {
-    setExpenses((prev) => ({
-      ...prev,
-      [selectedCategory]: prev[selectedCategory] + Number(expenseValue),
-    }));
-  };
 
   return (
     <Container maxWidth="sm">
@@ -90,24 +74,24 @@ const BudgetCalculator: React.FC = () => {
       </Box>
       {
         <List>
-          {Object.entries(categoryBudget).map(([key, value]) => (
+          {Object.entries(state).map(([key, value]) => (
             <CategoryItem
               key={key}
               category={key as Categories}
-              expense={expenses[key as Categories]}
-              budget={value}
-              handleCategoryBudget={handleCategoryBudget}
+              expense={value.expense}
+              budget={value.budget}
             />
           ))}
         </List>
       }
       <Box sx={{ display: 'flex' }}>
         <TextField
-          value={budgetValue}
+          value={values.totalBudget}
+          name="totalBudget"
           placeholder="Enter your budget"
-          onChange={handleTotalBudgetValue}
+          onChange={handleChange}
         />
-        <Button onClick={saveTotalBudget}>Save Budget</Button>
+        <Button onClick={submitForm}>Save Budget</Button>
       </Box>
       <Box sx={{ mt: 5 }}>
         <Typography textAlign="start" variant="h6">
@@ -117,16 +101,21 @@ const BudgetCalculator: React.FC = () => {
           <Select
             styles={selectStyles}
             menuPosition="fixed"
+            name="category"
+            value={values.category}
             options={categoryOptions}
-            onChange={handleSelectExpenseCategory}
+            onChange={(option: any) => {
+              setFieldValue('category', option);
+            }}
           />
           <TextField
             sx={{ m: 2 }}
-            value={expenseValue}
+            name="expenseValue"
+            value={values.expenseValue}
             placeholder="Enter your expense"
-            onChange={(e) => setExpenseValue(Number(e.target.value))}
+            onChange={handleChange}
           />
-          <Button onClick={handleAddExpense}>Add Expsense</Button>
+          <Button onClick={submitForm}>Add Expsense</Button>
         </Box>
       </Box>
     </Container>
