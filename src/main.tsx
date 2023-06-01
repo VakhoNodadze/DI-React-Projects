@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App'
+import LazyApp from './lazyLoading/App'
 // import App from './useReducer-example/App';
 import './index.css'
 import StoreProvider from './store/StoreContext'
@@ -12,6 +13,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <StoreProvider>
         <App />
+        {/* <LazyApp /> */}
       </StoreProvider>
     </BrowserRouter>
   </React.StrictMode>

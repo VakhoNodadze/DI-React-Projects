@@ -11,6 +11,7 @@ import Login from './pages/Login'
 import Checkout from './pages/Checkout'
 
 import TodoList from './Todo-example-class/TodoList'
+import StopwatchApp from './StopWatch'
 
 import { isUserAuthenticated } from './helpers/auth'
 
@@ -35,18 +36,19 @@ function ProtectedRoute() {
 function App() {
   const navigate = useNavigate()
 
-  useEffect(() => {
-    if (!isUserAuthenticated()) navigate('/login')
-    if (isUserAuthenticated()) {
-      navigate('/')
-    }
-  }, [isUserAuthenticated()])
+  // useEffect(() => {
+  //   if (!isUserAuthenticated()) navigate('/login')
+  //   if (isUserAuthenticated()) {
+  //     navigate('/')
+  //   }
+  // }, [isUserAuthenticated()])
 
   return (
-    <Routes>
-      <Route path='/*' element={<ProtectedRoute />} />
-      <Route path='/login' element={<Login />} />
-    </Routes>
+    <StopwatchApp />
+    // <Routes>
+    //   <Route path='/*' element={<ProtectedRoute />} />
+    //   <Route path='/login' element={<Login />} />
+    // </Routes>
   )
 }
 

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react'
 
 import './Home.scss'
-import { TBackendProduct, TCartProduct } from '../../store/StoreContext'
+import { TBackendProduct, TCartProduct, Products } from '../../store/StoreContext'
 import CardItem from '../../components/Card'
 import { getAllProducts, deleteProduct, changeProduct } from '../../helpers/services/products'
 import { getFinalProject } from '../../helpers/services/final-project'

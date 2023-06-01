@@ -42,6 +42,10 @@ export type TBackendProduct = {
   images: string[]
 }
 
+export type Products<T> = {
+  products: T[]
+}
+
 export type TCartProduct = {
   quantity: number
 } & TBackendProduct
