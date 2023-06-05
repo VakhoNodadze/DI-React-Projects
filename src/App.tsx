@@ -1,76 +1,86 @@
-import React, { useState, useEffect, createContext } from 'react';
-import GlobalStyle from './styled/global';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { ThemeProvider } from 'styled-components';
+import { useState, useEffect, createContext, useContext } from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
+import { CssBaseline } from '@mui/material';
 
-import { users } from './utils/data';
-import { themes, light, dark } from './styled/themes';
-import useToasts from './hooks/useToasts';
-import Flex from './components/primitives/Flex';
-import Main from './pages/Main';
-import EditUser from './pages/EditUser';
+import AppTheme from './theme/AppTheme';
 
-export const StateContext = createContext({ user: {} });
+// import { users } from './utils/data';
+// import { themes, light, dark } from './styled/themes';
+// import useToasts from './hooks/useToasts';
+import { Flex } from './components/primitives';
+import Main from './pages/Main/Main';
+// import EditUser from './pages/EditUser';
+
+type StoreContextProps = {
+  handleSetChosenUser: (user: UserItem) => void;
+  handleEditUser: (userId: string) => void;
+  handleDeleteUser: (userId: string) => void;
+  handleAddUser: (user: UserItem) => void;
+};
+
+export const StateContext = createContext({} as StoreContextProps);
+
+export const useGlobalState = () => useContext(StateContext);
 
 const App = () => {
-  const [theme, setTheme] = useState(light);
-  const [background, setBackground] = useState(light.color.backgroundPr);
-
-  const [user, setUser] = useState(null);
-  const [userList, setUserList] = useState(users);
-  const [addToast, renderToasts] = useToasts();
+  const [user, setUser] = useState<UserItem | null>(null);
+  const [userList, setUserList] = useState<UserItem[]>([]);
 
   useEffect(() => {
-    for (let i = 0; i < userList.length; i++) {
-      if (user?._id === userList[i]._id) {
-        userList[i] = user;
-      }
-    }
-  }, [user]);
+    const fetchUsers = async () => {
+      const response = await fetch('http://localhost:3000/users');
+      const data = await response.json();
+      setUserList(data);
+    };
+    fetchUsers();
+  }, []);
 
-  useEffect(() => {
-    setBackground(theme.color.backgroundPr);
-  }, [theme]);
+  const handleSetChosenUser = (user: UserItem) => {
+    setUser(user);
+  };
 
-  const handleThemeChange = () => {
-    if (theme.type === light.type) {
-      setTheme(dark);
-    }
-    if (theme.type === dark.type) {
-      setTheme(light);
-    }
+  const handleEditUser = (userId: string) => {
+    setUserList((prev) => {
+      return prev.map((user: UserItem) => {
+        if (user.id === userId) {
+          return user;
+        }
+        return user;
+      });
+    });
+  };
+
+  const handleDeleteUser = (userId: string) => {
+    setUserList((prev) => {
+      return prev.filter((user: UserItem) => user.id !== userId);
+    });
+  };
+
+  const handleAddUser = (user: UserItem) => {
+    setUserList((prev) => {
+      return [...prev, user];
+    });
   };
 
   return (
-    <ThemeProvider theme={themes[theme.type]}>
+    <AppTheme>
       <StateContext.Provider
         value={{
-          user,
-          setUser,
-          onThemeChange: handleThemeChange,
-          isDark: theme.type,
-          addToast,
-          userList,
-          setUserList,
+          handleSetChosenUser,
+          handleEditUser,
+          handleDeleteUser,
+          handleAddUser,
         }}
       >
-        <Flex
-          direction="column"
-          full
-          height="100vh"
-          style={{ backgroundColor: background }}
-        >
-          <GlobalStyle />
+        <CssBaseline />
+        <Flex>
           <BrowserRouter>
-            <Switch>
-              <Route path="/" element={() => <Main />} exact />
-              <Route path="/edit" element={() => <EditUser />} exact />
-            </Switch>
+            <Route path="/" element={<Main />} />
+            {/* <Route path="/edit" element={<EditUser />} /> */}
           </BrowserRouter>
         </Flex>
-        {renderToasts()}
       </StateContext.Provider>
-    </ThemeProvider>
+    </AppTheme>
   );
 };
 
