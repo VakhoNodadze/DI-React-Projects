@@ -1,14 +1,14 @@
-import { useState, useEffect, createContext, useContext } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
-import { CssBaseline } from '@mui/material';
+import { useState, useEffect, createContext, useContext } from "react";
+import { Routes, Route } from "react-router-dom";
+import { CssBaseline } from "@mui/material";
 
-import AppTheme from './theme/AppTheme';
+import AppTheme from "./theme/AppTheme";
 
 // import { users } from './utils/data';
 // import { themes, light, dark } from './styled/themes';
 // import useToasts from './hooks/useToasts';
-import { Flex } from './components/primitives';
-import Main from './pages/Main/Main';
+import { Flex } from "./components/primitives";
+import Main from "./pages/Main/Main";
 // import EditUser from './pages/EditUser';
 
 type StoreContextProps = {
@@ -16,6 +16,7 @@ type StoreContextProps = {
   handleEditUser: (userId: string) => void;
   handleDeleteUser: (userId: string) => void;
   handleAddUser: (user: UserItem) => void;
+  userList: UserItem[];
 };
 
 export const StateContext = createContext({} as StoreContextProps);
@@ -28,7 +29,7 @@ const App = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const response = await fetch('http://localhost:3000/users');
+      const response = await fetch("/data.json");
       const data = await response.json();
       setUserList(data);
     };
@@ -62,6 +63,8 @@ const App = () => {
     });
   };
 
+  console.log(userList);
+
   return (
     <AppTheme>
       <StateContext.Provider
@@ -70,14 +73,15 @@ const App = () => {
           handleEditUser,
           handleDeleteUser,
           handleAddUser,
+          userList,
         }}
       >
         <CssBaseline />
         <Flex>
-          <BrowserRouter>
+          <Routes>
             <Route path="/" element={<Main />} />
             {/* <Route path="/edit" element={<EditUser />} /> */}
-          </BrowserRouter>
+          </Routes>
         </Flex>
       </StateContext.Provider>
     </AppTheme>

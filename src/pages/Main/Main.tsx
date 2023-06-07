@@ -1,10 +1,11 @@
-import React from 'react';
-import { Grid, Typography, TextField } from '@mui/material';
+import React from "react";
+import { Grid, Typography, TextField } from "@mui/material";
 
-import { FlexColumnStart } from '../../components/primitives';
+import { FlexColumnStart } from "../../components/primitives";
+import UserList from "./components/UserList";
 
 const MainPage = () => {
-  const [searchValue, setSearchValue] = React.useState('');
+  const [searchValue, setSearchValue] = React.useState("");
 
   return (
     <FlexColumnStart>
@@ -21,7 +22,7 @@ const MainPage = () => {
           />
         </Grid>
       </Grid>
-      {/* <Table/> */}
+      <UserList />
     </FlexColumnStart>
   );
 };
