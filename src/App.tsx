@@ -1,22 +1,23 @@
-import { useState, useEffect, createContext, useContext } from "react";
-import { Routes, Route } from "react-router-dom";
-import { CssBaseline } from "@mui/material";
+import { useState, useEffect, createContext, useContext } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { CssBaseline } from '@mui/material';
 
-import AppTheme from "./theme/AppTheme";
+import AppTheme from './theme/AppTheme';
 
 // import { users } from './utils/data';
 // import { themes, light, dark } from './styled/themes';
 // import useToasts from './hooks/useToasts';
-import { Flex } from "./components/primitives";
-import Main from "./pages/Main/Main";
-// import EditUser from './pages/EditUser';
+import { Flex } from './components/primitives';
+import Main from './pages/Main/Main';
+import UserItem from './pages/UserItem/UserItem';
 
 type StoreContextProps = {
   handleSetChosenUser: (user: UserItem) => void;
-  handleEditUser: (userId: string) => void;
+  handleEditUser: (userId: string, newUser: EditUserItem) => void;
   handleDeleteUser: (userId: string) => void;
   handleAddUser: (user: UserItem) => void;
   userList: UserItem[];
+  user: UserItem | null;
 };
 
 export const StateContext = createContext({} as StoreContextProps);
@@ -29,7 +30,7 @@ const App = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const response = await fetch("/data.json");
+      const response = await fetch('/data.json');
       const data = await response.json();
       setUserList(data);
     };
@@ -40,11 +41,11 @@ const App = () => {
     setUser(user);
   };
 
-  const handleEditUser = (userId: string) => {
+  const handleEditUser = (userId: string, newUser: EditUserItem) => {
     setUserList((prev) => {
       return prev.map((user: UserItem) => {
         if (user.id === userId) {
-          return user;
+          return { ...user, ...newUser };
         }
         return user;
       });
@@ -63,8 +64,6 @@ const App = () => {
     });
   };
 
-  console.log(userList);
-
   return (
     <AppTheme>
       <StateContext.Provider
@@ -74,13 +73,14 @@ const App = () => {
           handleDeleteUser,
           handleAddUser,
           userList,
+          user,
         }}
       >
         <CssBaseline />
         <Flex>
           <Routes>
             <Route path="/" element={<Main />} />
-            {/* <Route path="/edit" element={<EditUser />} /> */}
+            <Route path="/user" element={<UserItem />} />
           </Routes>
         </Flex>
       </StateContext.Provider>

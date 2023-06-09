@@ -1,20 +1,20 @@
-import React from "react";
-import { Grid, Typography, TextField } from "@mui/material";
+import React from 'react';
+import { Grid, Typography, TextField } from '@mui/material';
 
-import { FlexColumnStart } from "../../components/primitives";
-import UserList from "./components/UserList";
+import { FlexColumnStart } from '../../components/primitives';
+import UserList from './components/UserList';
 
 const MainPage = () => {
-  const [searchValue, setSearchValue] = React.useState("");
+  const [searchValue, setSearchValue] = React.useState('');
 
   return (
-    <FlexColumnStart>
+    <FlexColumnStart px={5}>
       <Grid container sx={{ p: 4 }}>
         <Grid item xs={1} />
         <Grid item xs={6}>
-          <Typography variant="h1">Project Access</Typography>
+          <Typography variant="h2">Project Access</Typography>
         </Grid>
-        <Grid xs={5}>
+        <Grid item xs={5}>
           <TextField
             value={searchValue}
             onChange={(e: any) => setSearchValue(e.target.value)}

@@ -15,7 +15,7 @@
       },
       {
         "hasPermission": true,
-        "permissionGroupArray": [true, true, true, true, true]
+        "permissionGroupArray": [true, false, true, true, true]
       },
       {
         "hasPermission": false,

@@ -40,6 +40,12 @@ export const FlexBetweenWhite = styled(Box)({
   color: 'primary.white',
 });
 
+export const FlexColumn = styled(Box)({
+  display: 'flex',
+  flexDirection: 'column',
+  width: '100%',
+});
+
 export const FlexColumnCenter = styled(Box)({
   display: 'flex',
   flexDirection: 'column',

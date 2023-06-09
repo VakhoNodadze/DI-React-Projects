@@ -1,9 +1,13 @@
-import { useState } from "react";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { useState } from 'react';
+import { Box, Button, Grid, Typography } from '@mui/material';
 
-import { useGlobalState } from "../../../App";
-import { FlexBetween } from "../../../components/primitives";
-import UserListItem from "./UserListItem";
+import { useGlobalState } from '../../../App';
+import {
+  Flex,
+  FlexBetween,
+  FlexColumnStart,
+} from '../../../components/primitives';
+import UserListItem from './UserListItem';
 
 const PER_PAGE = [
   { label: 5, value: 5 },
@@ -13,7 +17,7 @@ const PER_PAGE = [
 
 type Order = {
   path: string;
-  order: "asc" | "desc";
+  order: 'asc' | 'desc';
 };
 
 const UserList = () => {
@@ -25,18 +29,18 @@ const UserList = () => {
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [sortList, setSortList] = useState<Order>({
-    path: "firstName",
-    order: "asc",
+    path: 'firstName',
+    order: 'asc',
   });
 
   const { userList } = useGlobalState();
 
   // order change
   const handleOrderChange = (path: string) => {
-    if (sortList.order === "asc") {
-      setSortList({ path, order: "desc" });
+    if (sortList.order === 'asc') {
+      setSortList({ path, order: 'desc' });
     } else {
-      setSortList({ path, order: "asc" });
+      setSortList({ path, order: 'asc' });
     }
   };
 
@@ -65,7 +69,7 @@ const UserList = () => {
   };
 
   return (
-    <Box>
+    <FlexColumnStart>
       <FlexBetween>
         <Button onClick={handleAddModalOpen}>Add </Button>
       </FlexBetween>
@@ -74,25 +78,25 @@ const UserList = () => {
         <Grid item xs={4}>
           <Typography
             variant="h3"
-            onClick={() => handleOrderChange("firstName")}
+            onClick={() => handleOrderChange('firstName')}
           >
-            User{" "}
+            User{' '}
           </Typography>
         </Grid>
         <Grid item xs={3}>
           <Typography
             variant="h3"
-            onClick={() => handleOrderChange("firstName")}
+            onClick={() => handleOrderChange('firstName')}
           >
-            Role{" "}
+            Role{' '}
           </Typography>
         </Grid>
         <Grid item xs={2}>
           <Typography
             variant="h3"
-            onClick={() => handleOrderChange("firstName")}
+            onClick={() => handleOrderChange('firstName')}
           >
-            Actions{" "}
+            Actions{' '}
           </Typography>
         </Grid>
       </Grid>
@@ -108,7 +112,7 @@ const UserList = () => {
           handleSetUserToDelete={handleSetUserToDelete}
         />
       ))}
-    </Box>
+    </FlexColumnStart>
   );
 };
 
